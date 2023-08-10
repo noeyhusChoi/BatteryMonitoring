@@ -1,0 +1,17 @@
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\bin\x64\Release\Monitoring.exe.config
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\bin\x64\Release\Monitoring.exe
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\bin\x64\Release\NFA_RCOM.dll
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\obj\x64\Release\Monitoring.csproj.AssemblyReference.cache
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\obj\x64\Release\Monitoring.csproj.SuggestedBindingRedirects.cache
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\obj\x64\Release\Monitoring.Properties.Resources.resources
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\obj\x64\Release\Monitoring.View.MainView.resources
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\obj\x64\Release\Monitoring.csproj.GenerateResource.cache
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\obj\x64\Release\Monitoring.csproj.CoreCompileInputs.cache
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\obj\x64\Release\Monitoring.csproj.CopyComplete
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\obj\x64\Release\Monitoring.exe
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\obj\x64\Release\Monitoring.TrustInfo.xml
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\obj\x64\Release\Monitoring.exe.manifest
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\bin\x64\Release\Monitoring.exe.manifest
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\bin\x64\Release\Monitoring.application
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\obj\x64\Release\Monitoring.application
+C:\Users\nextsq\source\repos\Monitoring\Monitoring\obj\x64\Release\Monitoring.View.gridBatBox.resources
