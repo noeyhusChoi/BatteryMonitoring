@@ -36,15 +36,15 @@ namespace Monitoring.Controller
 
         public MainController(View.MainView view) 
         {
-            _batList = new List<Bat>();
-            _MainView = view;
-            _MainView.SetController(this); //View 컨트롤러 설정
-
-            // Program Properties Setting에 저장된 값으로 Service 설정
             bool isSMS = Properties.Settings.Default._isSMS;
             bool isReboot = Properties.Settings.Default._isReboot;
-            _cmd = new CMD(isSMS, isReboot);
-            _MainView.UpdateServiceView(_cmd);
+            _cmd = new CMD(isSMS, isReboot);  // Program Properties Setting에 저장된 값으로 CMD 설정
+            _batList = new List<Bat>();
+            _MainView = view;
+            _MainView.SetController(this);  // View 컨트롤러 설정
+            _MainView.UpdateServiceView(_cmd); // View CMD 체크 설정
+
+            clsLog.uploadLog += new EventHandler(UpdateLog);    // Event (Log to View UI)
 
             Task.Run(() => RunState());  // State Machine
         
@@ -172,8 +172,8 @@ namespace Monitoring.Controller
 
         public void UpdateLog(string strlog) 
         {
-            string log = clsLog.LogWithFile(strlog);    // 로그 파일 저장
-            _MainView.UpdateLogView(log);               // 로그 화면 표시
+            string log = strlog;
+            _MainView.UpdateLogView(log);   // 로그 화면 표시
         }
 
         public void CheckBatFalut()
@@ -293,8 +293,7 @@ namespace Monitoring.Controller
                             state = STATE.CONNECT;
                         else
                             state = STATE.DISCONNECT;
-
-                        count++;
+                        
                         break;
 
                     case STATE.DISCONNECT:
