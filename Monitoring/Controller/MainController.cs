@@ -70,7 +70,7 @@ namespace Monitoring.Controller
                             string packet = pk.Value.PacketID;
 
                             Dictionary<string, clsTag> dicTg = pk.Value.TagList;
-                            UpdateBatListValue(deviceName, dicTg);
+                            UpdateBatListValue(deviceName, dicTg);  // 배터리 상태 갱신
                         }
                     }
                 }
@@ -156,7 +156,7 @@ namespace Monitoring.Controller
 
             foreach(Bat bat in _batList)
             {
-                _MainView.UpdateBatView(bat);
+                _MainView.UpdateBatView(bat);   // 배터리 상태 표시 (to View)
             }
         }
 
@@ -173,7 +173,7 @@ namespace Monitoring.Controller
         public void UpdateLog(string strlog) 
         {
             string log = strlog;
-            _MainView.UpdateLogView(log);   // 로그 화면 표시
+            _MainView.UpdateLogView(log);   // 로그 표시 (to View)
         }
 
         public void CheckBatFalut()
@@ -205,7 +205,7 @@ namespace Monitoring.Controller
                     if(_bat.Name == _name)
                     {
                         // 값 지속 확인
-                        if (_bat.SOC == 0 && _bat.Current < 0)
+                        if (_bat.SOC <= 0 && _bat.Current < 0)
                         {
                             // max_time 이후 값 정상 아닐 시 통신프로그램 종료 및 SMS 송신
                             if (end_time < DateTime.Now)
@@ -239,8 +239,8 @@ namespace Monitoring.Controller
 
             if (_cmd.Reboot)
             {
-                //clsProcess.KillProcess("NFA");
-                //clsProcess.KillProcess("NFA_HOST");
+                clsProcess.KillProcess("NFA");
+                clsProcess.KillProcess("NFA_HOST");
                 UpdateLog($"{_name} Shutdown NFA");
             }
         }
@@ -258,6 +258,7 @@ namespace Monitoring.Controller
                         _RCOM = new clsRCOM();
                         state = STATE.CONNECT;
                         //init
+
                         break;
 
                     case STATE.CONNECT:
@@ -270,6 +271,7 @@ namespace Monitoring.Controller
                         {
                             state = STATE.CONNECTERROR;
                         }
+                        
                         break;
 
                     case STATE.GETDATA:
@@ -281,11 +283,11 @@ namespace Monitoring.Controller
                         break;
 
                     case STATE.PROCESSDATA:
-                        // 배터리 값 업데이트 (to View)
-                        UpdateBatList();
-                        // 배터리 상태이상 확인
-                        CheckBatFalut();
+                        UpdateBatList();    // 배터리 상태 업데이트 (to View)
+                        CheckBatFalut();    // 배터리 상태이상 확인
+                        
                         state = STATE.GETDATA;
+                        
                         break;
 
                     case STATE.CONNECTERROR:
@@ -299,9 +301,11 @@ namespace Monitoring.Controller
                     case STATE.DISCONNECT:
                         _RCOM = null;
                         state = STATE.CONNECT;
+
                         return;
                 }
-                _MainView.UpdateConnectionView(state);
+
+                _MainView.UpdateConnectionView(state);  // 상태 표시 (to View)
             }
         }
     }
