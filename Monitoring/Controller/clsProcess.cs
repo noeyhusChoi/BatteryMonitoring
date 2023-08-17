@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -11,7 +12,7 @@ namespace Monitoring.Controller
     internal class clsProcess
     {
         public clsProcess() { }
-        public static List<Process> getProcessList()
+        public static List<Process> GetProcessList()
         {
             Process[] processes = Process.GetProcesses();
 
@@ -19,25 +20,27 @@ namespace Monitoring.Controller
 
             return list;
         }
-        public static void KillProcess(string ProcessName)
+
+        public static void KillProcess(string processname)
         {
-            List<Process> processes = getProcessList();
+            List<Process> processes = GetProcessList();
 
             foreach (Process process in processes)
             {
-                if (process.ProcessName.Equals(ProcessName))
+                if (process.ProcessName.Equals(processname))
                 {
                     process.Kill();
                 }
             }
         }
-        public static void RebootProcess(string ProcessName)
+
+        public static void RebootProcess(string processname)
         {
-            List<Process> processes = getProcessList();
+            List<Process> processes = GetProcessList();
 
             foreach (Process process in processes)
             {
-                if (process.ProcessName.Equals(ProcessName))
+                if (process.ProcessName.Equals(processname))
                 {
                     string path = process.MainModule.FileName;
                     
@@ -45,21 +48,24 @@ namespace Monitoring.Controller
 
                     Thread.Sleep(1000);
 
-                    if (!IsRunningProcess(ProcessName))
+                    if (!IsRunningProcess(processname))
                     {
-                        Process.Start(path);    // NFA 에러 => 수정필요 
+                        Process startprocess = new Process();
+                        startprocess.StartInfo.UseShellExecute = false;
+                        startprocess.StartInfo.FileName = path;
+                        startprocess.StartInfo.CreateNoWindow = false;
+                        startprocess.StartInfo.WorkingDirectory = Path.GetDirectoryName(path);
+                        startprocess.Start();
                     }
                 }
             }
         }
-        public static bool IsRunningProcess(string ProcessName) 
+
+        public static bool IsRunningProcess(string processname) 
         {
-            var isRunning = Process.GetProcesses().Any(p => p.ProcessName.Equals(ProcessName));
+            var isRunning = Process.GetProcesses().Any(p => p.ProcessName.Equals(processname));
 
             return isRunning;
         }
-
     }
-
-    
 }

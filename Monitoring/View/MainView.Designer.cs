@@ -75,7 +75,7 @@
             // 
             this.gboxConnection.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.gboxConnection.Controls.Add(this.panel1);
-            this.gboxConnection.Location = new System.Drawing.Point(271, 7);
+            this.gboxConnection.Location = new System.Drawing.Point(271, 5);
             this.gboxConnection.Margin = new System.Windows.Forms.Padding(3, 5, 10, 0);
             this.gboxConnection.Name = "gboxConnection";
             this.gboxConnection.Padding = new System.Windows.Forms.Padding(3, 0, 3, 3);
@@ -161,7 +161,7 @@
             this.gboxService.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel1.SetColumnSpan(this.gboxService, 2);
             this.gboxService.Controls.Add(this.flowLayoutPanel1);
-            this.gboxService.Location = new System.Drawing.Point(378, 7);
+            this.gboxService.Location = new System.Drawing.Point(378, 5);
             this.gboxService.Margin = new System.Windows.Forms.Padding(3, 5, 10, 0);
             this.gboxService.Name = "gboxService";
             this.gboxService.Size = new System.Drawing.Size(149, 42);

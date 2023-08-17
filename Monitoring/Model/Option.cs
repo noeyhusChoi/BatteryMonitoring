@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace Monitoring.Model
 {
-    public class CMD
+    public class Option
     {
-        public CMD()
+        public Option()
         {
             _sms = false;
             _reboot = false;
         }
-        public CMD(bool sms, bool reboot)
+        public Option(bool sms, bool reboot)
         {
             _sms = sms;
             _reboot = reboot;

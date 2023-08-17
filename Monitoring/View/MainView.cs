@@ -30,7 +30,7 @@ namespace Monitoring.View
         {
             _control = control;
         }
-        public void AddBatView(Bat bat)
+        public void AddBatView(Battery bat)
         {
             foreach (System.Windows.Forms.Control control in pnlDeviceView.Controls)
             {
@@ -56,7 +56,7 @@ namespace Monitoring.View
                 pnlDeviceView.Controls.Add(grid);
             }
         }
-        public void UpdateBatView(Bat bat)
+        public void UpdateBatView(Battery bat)
         {
             // Update Value
             foreach (System.Windows.Forms.Control control in pnlDeviceView.Controls)
@@ -95,7 +95,7 @@ namespace Monitoring.View
                 richLog.AppendText(log + Environment.NewLine);
             }
         }
-        public void UpdateServiceView(CMD service)
+        public void UpdateServiceView(Option service)
         {
             chkSMS.Checked = service.SMS;
             chkReboot.Checked = service.Reboot;
@@ -154,21 +154,16 @@ namespace Monitoring.View
             bool isSMS = chkSMS.Checked;
             bool isReboot = chkReboot.Checked;
 
-            CMD service = new CMD(isSMS, isReboot);
-            _control.UpdateCMD(service);
+            Option option = new Option(isSMS, isReboot);
+            _control.UpdateCMD(option);
         }
         private void chkReboot_CheckedChanged(object sender, EventArgs e)
         {
             bool isSMS = chkSMS.Checked;
             bool isReboot = chkReboot.Checked;
 
-            CMD service = new CMD(isSMS, isReboot);
-            _control.UpdateCMD(service);
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
+            Option option = new Option(isSMS, isReboot);
+            _control.UpdateCMD(option);
         }
     }
 }

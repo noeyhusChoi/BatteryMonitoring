@@ -27,22 +27,21 @@ namespace Monitoring.Controller
             CONNECTERROR,
             DISCONNECT
         }
-
         const int max_time = 60;    // Fault CountDown Time (Seconds)
         private NFA_RCOM.clsRCOM _RCOM;
         private View.MainView _MainView;
-        private IList<Bat> _batList;
-        private CMD _cmd;
+        private IList<Battery> _batList;
+        private Option _option;
 
         public MainController(View.MainView view) 
         {
             bool isSMS = Properties.Settings.Default._isSMS;
             bool isReboot = Properties.Settings.Default._isReboot;
-            _cmd = new CMD(isSMS, isReboot);  // Program Properties Setting에 저장된 값으로 CMD 설정
-            _batList = new List<Bat>();
+            _option = new Option(isSMS, isReboot);  // Program Properties Setting에 저장된 값으로 CMD 설정
+            _batList = new List<Battery>();
             _MainView = view;
             _MainView.SetController(this);  // View 컨트롤러 설정
-            _MainView.UpdateServiceView(_cmd); // View CMD 체크 설정
+            _MainView.UpdateServiceView(_option); // View CMD 체크 설정
 
             clsLog.uploadLog += new EventHandler(UpdateLog);    // Event (Log to View UI)
 
@@ -100,7 +99,7 @@ namespace Monitoring.Controller
             // INSERT BATTERY DEVICE
             bool hasBat = false;
             
-            foreach (Bat bat in _batList)
+            foreach (Battery bat in _batList)
             {
                 if (bat.Name == deviceName)
                     hasBat = true;
@@ -108,7 +107,7 @@ namespace Monitoring.Controller
 
             if(!hasBat)
             {
-                Bat bat = new Bat(deviceName);
+                Battery bat = new Battery(deviceName);
                 _batList.Add(bat);
                 _MainView.AddBatView(bat);
             }
@@ -154,19 +153,19 @@ namespace Monitoring.Controller
         {
             if (_batList.Count <= 0) return;
 
-            foreach(Bat bat in _batList)
+            foreach(Battery bat in _batList)
             {
                 _MainView.UpdateBatView(bat);   // 배터리 상태 표시 (to View)
             }
         }
 
-        public void UpdateCMD(CMD cmd) 
+        public void UpdateCMD(Option cmd) 
         {
-            _cmd = cmd;
+            _option = cmd;
 
             // 체크박스 상태 저장
-            Properties.Settings.Default._isSMS = _cmd.SMS;
-            Properties.Settings.Default._isReboot = _cmd.Reboot;
+            Properties.Settings.Default._isSMS = _option.SMS;
+            Properties.Settings.Default._isReboot = _option.Reboot;
             Properties.Settings.Default.Save();
         }
 
@@ -231,17 +230,17 @@ namespace Monitoring.Controller
             string _name = name.ToString();
 
             // exec Service - SMS, Reboot
-            if (_cmd.SMS)
+            if (_option.SMS)
             {
                 //SMS Send
                 UpdateLog($"{_name} Send SMS");
             }
 
-            if (_cmd.Reboot)
+            if (_option.Reboot)
             {
-                clsProcess.KillProcess("NFA");
-                clsProcess.KillProcess("NFA_HOST");
-                UpdateLog($"{_name} Shutdown NFA");
+                clsProcess.RebootProcess("NFA");
+                clsProcess.RebootProcess("NFA_HOST");
+                UpdateLog($"{_name} Reboot NFA");
             }
         }
 
@@ -255,9 +254,17 @@ namespace Monitoring.Controller
                 switch (state)
                 {
                     case STATE.CREATE:
-                        _RCOM = new clsRCOM();
-                        state = STATE.CONNECT;
-                        //init
+                        if(_RCOM != null)
+                        {
+                            _RCOM = null;
+                        }
+                        else
+                        {
+                            _RCOM = new clsRCOM();
+                            state = STATE.CONNECT;
+                        }
+
+                        count = 0;
 
                         break;
 
@@ -276,9 +283,13 @@ namespace Monitoring.Controller
 
                     case STATE.GETDATA:
                         if(ReadData())
+                        {
                             state = STATE.PROCESSDATA;
+                        }
                         else
+                        {
                             state = STATE.CONNECTERROR;
+                        }
                         
                         break;
 
@@ -291,18 +302,27 @@ namespace Monitoring.Controller
                         break;
 
                     case STATE.CONNECTERROR:
-                        if (count < 1)
+                        if (count < 0)     // 사용안함, 바로 Disconnect 
+                        {
+                            count++;
                             state = STATE.CONNECT;
+                        }
                         else
+                        {
                             state = STATE.DISCONNECT;
+                        }
                         
                         break;
 
                     case STATE.DISCONNECT:
-                        _RCOM = null;
-                        state = STATE.CONNECT;
+                        if(_RCOM != null)
+                        {
+                            _RCOM = null;
+                        }
 
-                        return;
+                        state = STATE.CREATE;
+
+                        break;
                 }
 
                 _MainView.UpdateConnectionView(state);  // 상태 표시 (to View)

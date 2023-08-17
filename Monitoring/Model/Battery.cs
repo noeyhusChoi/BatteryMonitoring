@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Monitoring.Model
 {
-    public class Bat
+    public class Battery
     {
-        public Bat()
+        public Battery()
         {
             _name = "";
             _soc = 0;
@@ -16,7 +16,7 @@ namespace Monitoring.Model
             _fault = false;
         }
 
-        public Bat(string name, double soc = 0, int current = 0, bool fault = false)
+        public Battery(string name, double soc = 0, int current = 0, bool fault = false)
         {
             _name = name;
             _soc = soc;
