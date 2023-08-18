@@ -240,8 +240,9 @@ namespace Monitoring.Controller
             if (_option.Reboot)
             {
                 // NFA Reboot
-                clsProcess.RebootProcess("NFA");
-                clsProcess.RebootProcess("NFA_HOST");
+                clsProcess process = new clsProcess();
+                process.RebootProcess("NFA");
+                process.RebootProcess("NFA_HOST");
             }
         }
 

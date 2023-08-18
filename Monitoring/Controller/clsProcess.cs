@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Monitoring.Controller
 {
-    internal class clsProcess
+    public  class clsProcess
     {
         public clsProcess() { }
-        public static List<Process> GetProcessList()
+        public List<Process> GetProcessList()
         {
             Process[] processes = Process.GetProcesses();
 
@@ -21,7 +21,7 @@ namespace Monitoring.Controller
             return list;
         }
 
-        public static void KillProcess(string processname)
+        public void KillProcess(string processname)
         {
             List<Process> processes = GetProcessList();
 
@@ -40,7 +40,7 @@ namespace Monitoring.Controller
             }
         }
 
-        public static void RebootProcess(string processname)
+        public void RebootProcess(string processname)
         {
             List<Process> processes = GetProcessList();
 
@@ -77,7 +77,7 @@ namespace Monitoring.Controller
             }
         }
 
-        public static bool IsRunningProcess(string processname) 
+        public bool IsRunningProcess(string processname) 
         {
             var isRunning = Process.GetProcesses().Any(p => p.ProcessName.Equals(processname));
 

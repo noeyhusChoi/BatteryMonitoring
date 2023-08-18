@@ -16,7 +16,6 @@ namespace Monitoring.Controller
         public static event EventHandler uploadLog;
 
         private static string _log;
-
         public static string Log
         {
             get { return _log; }
@@ -54,6 +53,14 @@ namespace Monitoring.Controller
 
             writer.WriteLine(_log);
             writer.Close();
+
+            return _log;
+        }
+
+        public static string LogToView(string log)
+        {
+            Log = log;
+            uploadLog(_log);
 
             return _log;
         }

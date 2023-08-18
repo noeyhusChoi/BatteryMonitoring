@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Monitoring.Controller
 {
-    internal class clsNotice
+    public class clsNotice
     {
         const string section = "Contact";
         string[] _phonenumbers;
@@ -33,7 +33,7 @@ namespace Monitoring.Controller
                 const string ID = "nextsq";
                 const string API_KEY = "3xtk0zw4ti95nr2yce41v6fywhd6f96v";
                 const string SENDER = "07048206884";
-                const string TEST_MODE = "Y";
+                const string TEST_MODE = "N";
 
                 string smsContent = msg; // dtFaultByDevcieSMS.Rows[0]["SMS_CONTENT"].ToString();
                 string receiver = phonenumber;
