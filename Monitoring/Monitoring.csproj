@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\clsLog.cs" />
+    <Compile Include="Controller\clsNotice.cs" />
     <Compile Include="Controller\clsProcess.cs" />
     <Compile Include="Controller\MainController.cs" />
     <Compile Include="Model\Battery.cs" />
@@ -99,11 +100,11 @@
     <Compile Include="View\MainView.Designer.cs">
       <DependentUpon>MainView.cs</DependentUpon>
     </Compile>
-    <Compile Include="View\GridBatBox.cs">
+    <Compile Include="View\MultiLabel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="View\GridBatBox.Designer.cs">
-      <DependentUpon>GridBatBox.cs</DependentUpon>
+    <Compile Include="View\MultiLabel.Designer.cs">
+      <DependentUpon>MultiLabel.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -118,8 +119,8 @@
     <EmbeddedResource Include="View\MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\GridBatBox.resx">
-      <DependentUpon>GridBatBox.cs</DependentUpon>
+    <EmbeddedResource Include="View\MultiLabel.resx">
+      <DependentUpon>MultiLabel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="packages.config" />
     <None Include="Properties\app.manifest" />
