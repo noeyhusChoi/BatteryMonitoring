@@ -23,7 +23,7 @@ namespace Monitoring.Controller
             set 
             {
                 string site = Properties.Settings.Default._site.ToString();
-                _log = String.Format($"{DateTime.Now.ToString()} >> [{site}] {value}"); 
+                _log = String.Format($"[{DateTime.Now.ToString("yyyy-MM-dd HH:mmm:ss")}] [{site}] [{value}]"); 
             }
         }
 

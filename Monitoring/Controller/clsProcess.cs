@@ -25,12 +25,18 @@ namespace Monitoring.Controller
         {
             List<Process> processes = GetProcessList();
 
-            foreach (Process process in processes)
-            {
-                if (process.ProcessName.Equals(processname))
+            try 
+            { 
+                foreach (Process process in processes)
                 {
-                    process.Kill();
+                    if (process.ProcessName.Equals(processname))
+                        process.Kill();
                 }
+            } 
+            catch(Exception e)
+            {
+                clsLog.LogToFile($"{processname} Shutdown Fail");
+                clsLog.LogToFile($"{processname} {e}");
             }
         }
 
@@ -38,26 +44,36 @@ namespace Monitoring.Controller
         {
             List<Process> processes = GetProcessList();
 
-            foreach (Process process in processes)
+            try
             {
-                if (process.ProcessName.Equals(processname))
+                foreach (Process process in processes)
                 {
-                    string path = process.MainModule.FileName;
-                    
-                    process.Kill();
-
-                    Thread.Sleep(1000);
-
-                    if (!IsRunningProcess(processname))
+                    if (process.ProcessName.Equals(processname))
                     {
-                        Process startprocess = new Process();
-                        startprocess.StartInfo.UseShellExecute = false;
-                        startprocess.StartInfo.FileName = path;
-                        startprocess.StartInfo.CreateNoWindow = false;
-                        startprocess.StartInfo.WorkingDirectory = Path.GetDirectoryName(path);
-                        startprocess.Start();
+                        string path = process.MainModule.FileName;
+                        
+                        process.Kill();
+
+                        Thread.Sleep(1000);
+
+                        if (!IsRunningProcess(processname))
+                        {
+                            Process startprocess = new Process();
+                            startprocess.StartInfo.UseShellExecute = false;
+                            startprocess.StartInfo.FileName = path;
+                            startprocess.StartInfo.CreateNoWindow = false;
+                            startprocess.StartInfo.WorkingDirectory = Path.GetDirectoryName(path);
+                            startprocess.Start();
+
+                            clsLog.LogToAll($"{processname} Reboot");
+                        }
                     }
                 }
+            }
+            catch(Exception e)
+            {
+                clsLog.LogToFile($"{processname} Reboot Fail");
+                clsLog.LogToFile($"{processname} {e}");
             }
         }
 

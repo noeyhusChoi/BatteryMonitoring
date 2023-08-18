@@ -30,40 +30,42 @@ namespace Monitoring.View
         {
             _control = control;
         }
+
         public void AddBatView(Battery bat)
         {
             foreach (System.Windows.Forms.Control control in pnlDeviceView.Controls)
             {
-                if (control is gridBatBox)
+                if (control is MultiLabel)
                 {
-                    gridBatBox tmp = control as gridBatBox;
+                    MultiLabel tmp = control as MultiLabel;
                     if (tmp.Tag.ToString() == bat.Name) return;
                 }
             }
 
-            gridBatBox grid = new gridBatBox();
-            grid.Tag = bat.Name;
-            grid.Title = bat.Name;
-            grid.CenterLeft = "Current";
-            grid.CenterRight = "SOC";
+            MultiLabel batteryLabel = new MultiLabel();
+            batteryLabel.Tag = bat.Name;
+            batteryLabel.Title = bat.Name;
+            batteryLabel.CenterLeft = "Current";
+            batteryLabel.CenterRight = "SOC";
 
             if(pnlDeviceView.InvokeRequired)
             {
-                pnlDeviceView.Invoke(new MethodInvoker(delegate { pnlDeviceView.Controls.Add(grid);}));
+                pnlDeviceView.Invoke(new MethodInvoker(delegate { pnlDeviceView.Controls.Add(batteryLabel);}));
             }
             else
             {
-                pnlDeviceView.Controls.Add(grid);
+                pnlDeviceView.Controls.Add(batteryLabel);
             }
         }
+
         public void UpdateBatView(Battery bat)
         {
             // Update Value
             foreach (System.Windows.Forms.Control control in pnlDeviceView.Controls)
             {
-                if (control is gridBatBox)
+                if (control is MultiLabel)
                 {
-                    gridBatBox tmp = control as gridBatBox;
+                    MultiLabel tmp = control as MultiLabel;
                     
                     if (tmp.Tag.ToString() == bat.Name)
                     {
@@ -84,6 +86,7 @@ namespace Monitoring.View
                 }
             }
         }
+
         public void UpdateLogView(string log)
         {
             if(richLog.InvokeRequired)
@@ -95,11 +98,13 @@ namespace Monitoring.View
                 richLog.AppendText(log + Environment.NewLine);
             }
         }
+
         public void UpdateServiceView(Option service)
         {
             chkSMS.Checked = service.SMS;
             chkReboot.Checked = service.Reboot;
         }
+
         public void UpdateConnectionView(Controller.MainController.STATE state)
         {
             string strConnection = "";
@@ -135,6 +140,7 @@ namespace Monitoring.View
                 lblConnect.Text = strConnection;
             }
         }
+
         public void ShowMessageBox()
         {
             string message = "통신 오류" + Environment.NewLine + "다시 연결 시도하시겠습니까?";
@@ -149,6 +155,7 @@ namespace Monitoring.View
             }
 
         }
+
         private void chkSMS_CheckedChanged(object sender, EventArgs e)
         {
             bool isSMS = chkSMS.Checked;
@@ -157,6 +164,7 @@ namespace Monitoring.View
             Option option = new Option(isSMS, isReboot);
             _control.UpdateCMD(option);
         }
+
         private void chkReboot_CheckedChanged(object sender, EventArgs e)
         {
             bool isSMS = chkSMS.Checked;

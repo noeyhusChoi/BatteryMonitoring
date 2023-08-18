@@ -27,7 +27,7 @@ namespace Monitoring.Controller
             CONNECTERROR,
             DISCONNECT
         }
-        const int max_time = 60;    // Fault CountDown Time (Seconds)
+        const int max_time = 10;    // Fault CountDown Time (Seconds)
         private NFA_RCOM.clsRCOM _RCOM;
         private View.MainView _MainView;
         private IList<Battery> _batList;
@@ -183,25 +183,24 @@ namespace Monitoring.Controller
                 if (bat.Current < 0 && bat.SOC <= 0 && bat.Fault == false)
                 {
                     bat.Fault = true;
-                    string deviceName = bat.Name;
-                    Task.Run(() => CheckBatFaultCount(deviceName));  // Fault 카운트 시작
+                    Task.Run(() => CheckBatFaultCount(bat));  // Fault 카운트 시작
                 }
             }
         }
         
-        public void CheckBatFaultCount(object name) 
+        public void CheckBatFaultCount(object bat) 
         {
-            string _name = name.ToString();
+            Battery battery = (Battery)bat;
             DateTime end_time = DateTime.Now.AddSeconds(max_time);
-            
-            UpdateLog($"{_name} Error Count Start");
+
+            clsLog.LogToAll($"{battery.Name} Error Count Start");
             
             while (true)
             {
                 foreach(var _bat in _batList)
                 {
                     // Fault 배터리 체크
-                    if(_bat.Name == _name)
+                    if(_bat.Name == battery.Name)
                     {
                         // 값 지속 확인
                         if (_bat.SOC <= 0 && _bat.Current < 0)
@@ -209,14 +208,14 @@ namespace Monitoring.Controller
                             // max_time 이후 값 정상 아닐 시 통신프로그램 종료 및 SMS 송신
                             if (end_time < DateTime.Now)
                             {
-                                RunCMD(_name);
+                                RunCMD(_bat);
                                 return;
                             }
                         }
                         else
                         {
                             _bat.Fault = false;
-                            UpdateLog($"{_name} Error Count Cancel");
+                            clsLog.LogToAll($"{battery.Name} Error Count Cancel");
                             return;
                         }
                     }
@@ -225,22 +224,24 @@ namespace Monitoring.Controller
             }
         }
 
-        public void RunCMD(object name)
+        public void RunCMD(object bat)
         {
-            string _name = name.ToString();
+            Battery battery = (Battery)bat;
+            string msg = clsLog.LogToAll($"{battery.Name} Soc:{battery.SOC}, Current:{battery.Current}, 배터리 과방전 중");
 
-            // exec Service - SMS, Reboot
+            // SMS, Reboot
             if (_option.SMS)
             {
-                //SMS Send
-                UpdateLog($"{_name} Send SMS");
+                // SMS Send
+                clsNotice notice = new clsNotice();
+                notice.SendToSMS(msg);
             }
 
             if (_option.Reboot)
             {
+                // NFA Reboot
                 clsProcess.RebootProcess("NFA");
                 clsProcess.RebootProcess("NFA_HOST");
-                UpdateLog($"{_name} Reboot NFA");
             }
         }
 

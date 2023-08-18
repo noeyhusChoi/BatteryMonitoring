@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace Monitoring.View
 {
-    public partial class gridBatBox : UserControl
+    public partial class MultiLabel : UserControl
     {
-        public gridBatBox()
+        public MultiLabel()
         {
             InitializeComponent();
 
