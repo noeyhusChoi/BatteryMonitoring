@@ -27,10 +27,10 @@ namespace Monitoring.Controller
             CONNECTERROR,
             DISCONNECT
         }
-        const int max_time = 10;    // Fault CountDown Time (Seconds)
+        private int max_time = Properties.Settings.Default._count;    // Fault CountDown Time (Seconds)
         private NFA_RCOM.clsRCOM _RCOM;
         private View.MainView _MainView;
-        private IList<Battery> _batList;
+        private List<Battery> _batList;
         private Option _option;
 
         public MainController(View.MainView view) 

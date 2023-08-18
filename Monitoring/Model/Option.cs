@@ -13,11 +13,13 @@ namespace Monitoring.Model
             _sms = false;
             _reboot = false;
         }
+        
         public Option(bool sms, bool reboot)
         {
             _sms = sms;
             _reboot = reboot;
         }
+        
         bool _sms;
         public bool SMS
         {

@@ -8,6 +8,9 @@
     <Setting Name="_isReboot" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="_count" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">60</Value>
+    </Setting>
     <Setting Name="_site" Type="System.String" Scope="User">
       <Value Profile="(Default)">장소</Value>
     </Setting>
