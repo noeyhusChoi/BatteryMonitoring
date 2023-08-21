@@ -49,18 +49,6 @@ namespace Monitoring.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("60")]
-        public int _count {
-            get {
-                return ((int)(this["_count"]));
-            }
-            set {
-                this["_count"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("장소")]
         public string _site {
             get {
@@ -68,6 +56,30 @@ namespace Monitoring.Properties {
             }
             set {
                 this["_site"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int _firstcount {
+            get {
+                return ((int)(this["_firstcount"]));
+            }
+            set {
+                this["_firstcount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int _defaultcount {
+            get {
+                return ((int)(this["_defaultcount"]));
+            }
+            set {
+                this["_defaultcount"] = value;
             }
         }
     }

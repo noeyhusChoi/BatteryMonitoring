@@ -30,7 +30,10 @@ namespace Monitoring.Controller
                 foreach (Process process in processes)
                 {
                     if (process.ProcessName.Equals(processname))
+                    {
                         process.Kill();
+                        clsLog.LogToAll($"{processname} Shutdown");
+                    }
                 }
             } 
             catch(Exception e)

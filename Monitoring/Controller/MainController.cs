@@ -27,7 +27,8 @@ namespace Monitoring.Controller
             CONNECTERROR,
             DISCONNECT
         }
-        private int max_time = Properties.Settings.Default._count;    // Fault CountDown Time (Seconds)
+        private int _firstCount = Properties.Settings.Default._firstcount;    // Fault CountDown Time (Seconds)
+        private int _defaultCount = Properties.Settings.Default._defaultcount; // Additional CountDown Time, Apply From After Second Fault 
         private NFA_RCOM.clsRCOM _RCOM;
         private View.MainView _MainView;
         private List<Battery> _batList;
@@ -191,7 +192,12 @@ namespace Monitoring.Controller
         public void CheckBatFaultCount(object bat) 
         {
             Battery battery = (Battery)bat;
-            DateTime end_time = DateTime.Now.AddSeconds(max_time);
+            DateTime endTime;
+
+            if (battery.FirstFault == true)
+                endTime = DateTime.Now.AddSeconds(_firstCount);
+            else
+                endTime = DateTime.Now.AddSeconds(_defaultCount);
 
             clsLog.LogToAll($"{battery.Name} Error Count Start");
             
@@ -206,9 +212,11 @@ namespace Monitoring.Controller
                         if (_bat.SOC <= 0 && _bat.Current < 0)
                         {
                             // max_time 이후 값 정상 아닐 시 통신프로그램 종료 및 SMS 송신
-                            if (end_time < DateTime.Now)
+                            if (endTime < DateTime.Now)
                             {
                                 RunCMD(_bat);
+                                _bat.Fault = false;
+                                _bat.FirstFault = false;
                                 return;
                             }
                         }
@@ -241,8 +249,8 @@ namespace Monitoring.Controller
             {
                 // NFA Reboot
                 clsProcess process = new clsProcess();
-                process.RebootProcess("NFA");
-                process.RebootProcess("NFA_HOST");
+                process.KillProcess("NFA");
+                process.KillProcess("NFA_HOST");
             }
         }
 
@@ -280,11 +288,12 @@ namespace Monitoring.Controller
                         {
                             state = STATE.CONNECTERROR;
                         }
-                        
+
+                        Thread.Sleep(500);
                         break;
 
                     case STATE.GETDATA:
-                        if(ReadData())
+                        if (ReadData())
                         {
                             state = STATE.PROCESSDATA;
                         }
@@ -300,7 +309,8 @@ namespace Monitoring.Controller
                         CheckBatFalut();    // 배터리 상태이상 확인
                         
                         state = STATE.GETDATA;
-                        
+
+                        Thread.Sleep(500);
                         break;
 
                     case STATE.CONNECTERROR:

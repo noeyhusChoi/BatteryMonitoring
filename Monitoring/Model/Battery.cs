@@ -14,14 +14,16 @@ namespace Monitoring.Model
             _soc = 0;
             _current = 0;
             _fault = false;
+            _firstFault = true;
         }
 
-        public Battery(string name, double soc = 0, int current = 0, bool fault = false)
+        public Battery(string name, double soc = 0, int current = 0, bool fault = false, bool hold = true)
         {
             _name = name;
             _soc = soc;
             _current = current;
-            _fault = false;
+            _fault = fault;
+            _firstFault = hold;
         }
 
         string _name;
@@ -50,6 +52,13 @@ namespace Monitoring.Model
         { 
             get { return _fault; } 
             set {  _fault = value; } 
+        }
+
+        bool _firstFault;
+        public bool FirstFault
+        {
+            get { return _firstFault; }
+            set { _firstFault = value; }
         }
     }
 }
