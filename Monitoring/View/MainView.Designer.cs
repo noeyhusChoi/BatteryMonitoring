@@ -214,7 +214,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.MinimumSize = new System.Drawing.Size(388, 534);
             this.Name = "MainView";
-            this.Text = "MainView";
+            this.Text = "배터리 모니터링";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.gboxConnection.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
